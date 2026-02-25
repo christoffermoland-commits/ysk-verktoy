@@ -60,14 +60,14 @@ export default function HomePage() {
             Klar for å lære? 🎯
           </h2>
           <p className="text-sm text-text-secondary max-w-sm mx-auto mb-4">
-            Start med LTP-kalkulatoren for å øve på vektberegning, eller slå opp et begrep i fagordboken.
+            Finn lastens tyngdepunkt med LTP-kalkulatoren, eller slå opp et begrep i fagordboken.
           </p>
           <Link
             to="/ltp-kalkulator"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors text-sm"
           >
             <Truck className="w-4 h-4" />
-            Start LTP-kalkulator
+            Finn LTP
           </Link>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { Calculator, BookOpen, Clock, PlayCircle, type LucideIcon } from 'lucide-react'
+import { Calculator, BookOpen, Clock, Crosshair, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   path: string
@@ -16,13 +16,24 @@ export const navItems: NavItem[] = [
   {
     path: '/ltp-kalkulator',
     label: 'LTP-kalkulator',
-    icon: Calculator,
-    emoji: '⚖️',
-    description: 'Beregn lovlig totalvekt for lastebil, semitrailer og vogntog',
+    icon: Crosshair,
+    emoji: '🎯',
+    description: 'Finn lastens tyngdepunkt i lasterommet',
     color: 'bg-orange-500/15',
     colorText: 'text-orange-400',
     colorBorder: 'hover:border-orange-500/40',
     colorGlow: 'hover:shadow-orange-500/10',
+  },
+  {
+    path: '/nyttelast-kalkulator',
+    label: 'Nyttelastkalkulator',
+    icon: Calculator,
+    emoji: '⚖️',
+    description: 'Beregn nyttelast for lastebil, semitrailer og vogntog',
+    color: 'bg-green-500/15',
+    colorText: 'text-green-400',
+    colorBorder: 'hover:border-green-500/40',
+    colorGlow: 'hover:shadow-green-500/10',
   },
   {
     path: '/fagordbok',
@@ -45,16 +56,5 @@ export const navItems: NavItem[] = [
     colorText: 'text-teal-400',
     colorBorder: 'hover:border-teal-500/40',
     colorGlow: 'hover:shadow-teal-500/10',
-  },
-  {
-    path: '/videoer',
-    label: 'Videoer',
-    icon: PlayCircle,
-    emoji: '🎬',
-    description: 'Læringsvideoer sortert etter tema',
-    color: 'bg-rose-500/15',
-    colorText: 'text-rose-400',
-    colorBorder: 'hover:border-rose-500/40',
-    colorGlow: 'hover:shadow-rose-500/10',
   },
 ]
