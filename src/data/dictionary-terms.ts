@@ -1,4 +1,4 @@
-import type { DictionaryTerm, CategoryInfo, DictionaryCategory } from '../types/dictionary'
+import type { DictionaryTerm, CategoryInfo } from '../types/dictionary'
 
 export const DICTIONARY_CATEGORIES: CategoryInfo[] = [
   { id: 'motor-drivverk', label: 'Motor og drivverk' },

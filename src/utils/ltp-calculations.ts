@@ -9,7 +9,6 @@ export function calculateLastebilC(input: LastebilInput, weightClass: WeightClas
   const maxFromVognkort = input.tillattTotalvekt
   const maxFromBK = axleLimits[input.antallAksler] ?? axleLimits[2]
   const maxTillattVekt = Math.min(maxFromVognkort, maxFromBK)
-  const ledigKapasitet = Math.max(0, maxTillattVekt - input.egenvekt)
 
   const warnings: string[] = []
   let limitingFactor = ''

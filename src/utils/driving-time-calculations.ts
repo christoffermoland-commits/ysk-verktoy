@@ -20,10 +20,6 @@ function formatTime(minutes: number): string {
 export function calculateDrivingTime(session: DrivingSession, currentTime: string): DrivingTimeResult {
   const startMinutes = parseTime(session.startTime)
   const currentMinutes = parseTime(currentTime)
-  const elapsed = currentMinutes >= startMinutes
-    ? currentMinutes - startMinutes
-    : (1440 - startMinutes) + currentMinutes
-
   // Sort breaks by start time
   const sortedBreaks = [...session.breaks].sort(
     (a, b) => parseTime(a.startTime) - parseTime(b.startTime)
@@ -33,7 +29,6 @@ export function calculateDrivingTime(session: DrivingSession, currentTime: strin
   const timeline: TimelineSegment[] = []
   let totalDrivingMinutes = 0
   let continuousDriving = 0
-  let lastBreakResetTime = startMinutes
   let pos = startMinutes
 
   for (const brk of sortedBreaks) {
@@ -62,7 +57,6 @@ export function calculateDrivingTime(session: DrivingSession, currentTime: strin
     // A break >= 45 min resets the continuous driving counter
     if (brk.duration >= REQUIRED_BREAK) {
       continuousDriving = 0
-      lastBreakResetTime = brkStart + brk.duration
     }
 
     pos = brkStart + brk.duration
