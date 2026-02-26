@@ -16,7 +16,7 @@ const vehicleOptions: { type: VehicleType; label: string; emoji: string; descrip
   },
   {
     type: 'semitrailer',
-    label: 'Semitrailer',
+    label: 'Semitrailer (CE)',
     emoji: '🚚',
     description: 'Trekkbil + semitrailer (leddkombinasjon)',
     icon: Container,
