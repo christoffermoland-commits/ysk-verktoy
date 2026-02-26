@@ -15,8 +15,8 @@ export default function HomePage() {
           />
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          <span className="text-accent">YSK</span>{' '}
-          <span className="text-text-primary">Verktøy</span>
+          <span className="text-accent">OTL</span>{' '}
+          <span className="text-text-primary">Sjåførverktøy</span>
         </h1>
         <p className="text-text-secondary text-base sm:text-lg max-w-md mx-auto leading-relaxed">
           Digitale verktøy for lærlinger i Yrkessjåførfaget – beregn vekt, lær begreper og forstå regelverket! 💪
@@ -79,7 +79,7 @@ export default function HomePage() {
       {/* Quick info */}
       <section className="text-center space-y-2 pb-4">
         <p className="text-xs text-text-muted leading-relaxed max-w-md mx-auto">
-          Appen er laget som læringsverktøy for YSK-elever og lærlinger.
+          Appen er laget som læringsverktøy for elever og lærlinger i Yrkessjåførfaget.
           Den erstatter ikke offisielle forskrifter – sjekk alltid gjeldende regelverk hos Statens vegvesen.
         </p>
       </section>

@@ -11,7 +11,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 text-text-primary hover:text-accent transition-colors">
           <img src="/otl-logo.png" alt="OTL Agder" className="h-9 w-auto" />
-          <span className="font-bold text-lg">YSK Verktøy</span>
+          <span className="font-bold text-lg">OTL Sjåførverktøy</span>
         </Link>
 
         {/* Desktop nav */}

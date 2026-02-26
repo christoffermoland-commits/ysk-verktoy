@@ -10,7 +10,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-sm text-text-muted">
-          <p>YSK Verktøy er et læringsverktøy og erstatter ikke offisielle forskrifter.</p>
+          <p>OTL Sjåførverktøy er et læringsverktøy og erstatter ikke offisielle forskrifter.</p>
           <p className="mt-1">Sjekk alltid gjeldende regelverk hos Statens vegvesen og Arbeidstilsynet.</p>
         </div>
       </div>

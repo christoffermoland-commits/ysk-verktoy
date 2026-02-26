@@ -40,7 +40,7 @@ export const navItems: NavItem[] = [
     label: 'Fagordbok',
     icon: BookOpen,
     emoji: '📖',
-    description: 'Slå opp tekniske begreper fra YSK-kurs og førerkortkurs C/CE',
+    description: 'Slå opp tekniske begreper fra yrkessjåførkurs og førerkort C/CE',
     color: 'bg-purple-500/15',
     colorText: 'text-purple-400',
     colorBorder: 'hover:border-purple-500/40',

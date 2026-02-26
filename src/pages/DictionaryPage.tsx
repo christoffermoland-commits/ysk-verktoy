@@ -22,7 +22,7 @@ export default function DictionaryPage() {
         </div>
         <div>
           <h1 className="text-2xl font-bold">Fagordbok</h1>
-          <p className="text-sm text-text-secondary">Teknisk ordbok for YSK og førerkort C/CE</p>
+          <p className="text-sm text-text-secondary">Teknisk ordbok for yrkessjåfør og førerkort C/CE</p>
         </div>
       </div>
 
