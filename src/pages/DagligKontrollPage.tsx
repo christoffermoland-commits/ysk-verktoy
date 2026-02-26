@@ -175,8 +175,8 @@ export default function DagligKontrollPage() {
           <ClipboardCheck className="w-5 h-5 text-amber-400" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Daglig kontroll</h1>
-          <p className="text-sm text-text-secondary">Sikkerhetskontroll og daglig ettersyn av kjøretøy</p>
+          <h1 className="text-2xl font-bold">Kontroll før kjøring</h1>
+          <p className="text-sm text-text-secondary">Sjekkliste for kontroll av kjøretøy før kjøring</p>
         </div>
       </div>
 

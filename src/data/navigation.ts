@@ -15,10 +15,10 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   {
     path: '/daglig-kontroll',
-    label: 'Daglig kontroll',
+    label: 'Kontroll før kjøring',
     icon: ClipboardCheck,
     emoji: '✅',
-    description: 'Sjekkliste for daglig kontroll av lastebil og tilhenger',
+    description: 'Sjekkliste for kontroll av lastebil og tilhenger før kjøring',
     color: 'bg-amber-500/15',
     colorText: 'text-amber-400',
     colorBorder: 'hover:border-amber-500/40',
