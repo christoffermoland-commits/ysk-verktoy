@@ -8,6 +8,9 @@ export type DictionaryCategory =
   | 'kjore-hviletid'
   | 'sikkerhet'
   | 'lasting-sikring'
+  | 'hms'
+  | 'transportoppdrag'
+  | 'trafikklaere'
 
 export interface DictionaryTerm {
   id: string

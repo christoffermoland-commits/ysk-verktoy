@@ -10,6 +10,9 @@ export const DICTIONARY_CATEGORIES: CategoryInfo[] = [
   { id: 'kjore-hviletid', label: 'Kjøre- og hviletid' },
   { id: 'sikkerhet', label: 'Sikkerhet' },
   { id: 'lasting-sikring', label: 'Lasting og sikring' },
+  { id: 'hms', label: 'HMS' },
+  { id: 'transportoppdrag', label: 'Transportoppdrag' },
+  { id: 'trafikklaere', label: 'Trafikklære' },
 ]
 
 export const dictionaryTerms: DictionaryTerm[] = [
@@ -63,6 +66,26 @@ export const dictionaryTerms: DictionaryTerm[] = [
     id: 'differensial',
     term: 'Differensial',
     definition: 'En mekanisme i drivakselen som tillater hjulene å rotere med ulik hastighet i svinger. Differensialsperre låser denne funksjonen for bedre grep på glatt underlag.',
+    category: 'motor-drivverk',
+  },
+  {
+    id: 'adblue',
+    term: 'AdBlue (SCR)',
+    definition: 'AdBlue er en vannløsning med urea som sprøytes inn i eksossystemet for å redusere NOx-utslipp. SCR (Selective Catalytic Reduction) er systemet som utfører rensingen. Påbudt på moderne dieselmotorer.',
+    category: 'motor-drivverk',
+    relatedTerms: ['egr'],
+  },
+  {
+    id: 'egr',
+    term: 'EGR (Eksosresirkulering)',
+    definition: 'Exhaust Gas Recirculation – sender en del av avgassen tilbake til innsugingen for å senke forbrenningstemperaturen og redusere NOx-utslipp. Brukes sammen med SCR på moderne motorer.',
+    category: 'motor-drivverk',
+    relatedTerms: ['adblue'],
+  },
+  {
+    id: 'energibaerere',
+    term: 'Energibærere',
+    definition: 'Ulike drivstofftyper og energikilder for kjøretøy: diesel, biodiesel (HVO), naturgass (CNG/LNG), hydrogen og elektrisitet. Læreplanen krever kunnskap om fordeler, ulemper og infrastruktur for de ulike alternativene.',
     category: 'motor-drivverk',
   },
 
@@ -148,6 +171,12 @@ export const dictionaryTerms: DictionaryTerm[] = [
     category: 'chassis',
     relatedTerms: ['svingskive'],
   },
+  {
+    id: 'pabygg',
+    term: 'Påbygg',
+    definition: 'Oppbygget på lastebilens chassis tilpasset transporttype. Eksempler: kapell (presenning), kjøle-/fryseskap, flak, tankpåbygg, krokløft og tippkasse. Valg av påbygg påvirker nyttelast og bruksområde.',
+    category: 'chassis',
+  },
 
   // Elektrisk anlegg
   {
@@ -191,7 +220,7 @@ export const dictionaryTerms: DictionaryTerm[] = [
     category: 'adr-farlig-gods',
   },
   {
-    id: 'transportdokument',
+    id: 'transportdokument-adr',
     term: 'Transportdokument (farlig gods)',
     definition: 'Obligatorisk dokument som følger med all transport av farlig gods. Inneholder UN-nummer, stoffnavn, fareklasse, mengde og avsender/mottaker.',
     category: 'adr-farlig-gods',
@@ -234,6 +263,13 @@ export const dictionaryTerms: DictionaryTerm[] = [
     term: 'Bruksklasse (BK10/BK8/BK6)',
     definition: 'Klassifisering av veiens bæreevne. BK10 tillater 10 tonn aksellast (riksveier), BK8 tillater 8 tonn, BK6 tillater 6 tonn. Bestemmer hvor tungt du kan kjøre.',
     category: 'kjoretoyforskriften',
+  },
+  {
+    id: 'vognkort',
+    term: 'Vognkort',
+    definition: 'Offentlig registreringsdokument for kjøretøyet. Del 1 skal alltid være med i kjøretøyet. Inneholder tekniske data som tillatt totalvekt, aksellast, egenvekt, akselavstand og D-verdi.',
+    category: 'kjoretoyforskriften',
+    relatedTerms: ['totalvekt', 'egenvekt', 'd-verdi'],
   },
 
   // Kjøre- og hviletid
@@ -309,5 +345,171 @@ export const dictionaryTerms: DictionaryTerm[] = [
     term: 'Friksjonskoeffisient (µ)',
     definition: 'Mål på friksjonen mellom last og lastegulv. Tre på stål: ca. 0.3, gummimatte: ca. 0.6. Høyere friksjon = færre stropper. Antiglimatter øker friksjonen.',
     category: 'lasting-sikring',
+  },
+  {
+    id: 'lastsikringsutstyr',
+    term: 'Lastsikringsutstyr',
+    definition: 'Fellesbetegnelse for utstyr brukt til å sikre last: spennbånd, kjettinger, stålwire, stopper, friksjonsmateriell og sikringsnett. Alt utstyr skal være CE-merket og kontrolleres jevnlig for skader.',
+    category: 'lasting-sikring',
+    relatedTerms: ['surring', 'sikringskraft'],
+  },
+
+  // HMS (nytt fra læreplanen)
+  {
+    id: 'risikovurdering',
+    term: 'Risikovurdering',
+    definition: 'Systematisk gjennomgang av farer knyttet til et arbeidsoppdrag. Sjåføren skal kunne identifisere risiko, vurdere sannsynlighet og konsekvens, og iverksette tiltak for å redusere risikoen.',
+    category: 'hms',
+    relatedTerms: ['sja', 'verneutstyr'],
+  },
+  {
+    id: 'sja',
+    term: 'Sikker jobbanalyse (SJA)',
+    definition: 'En systematisk gjennomgang av arbeidsoppgaver for å avdekke farer før arbeidet starter. Brukes spesielt ved uvanlige eller risikofylte oppdrag. Dokumenteres skriftlig.',
+    category: 'hms',
+    relatedTerms: ['risikovurdering'],
+  },
+  {
+    id: 'verneutstyr',
+    term: 'Verneutstyr (PPE)',
+    definition: 'Personlig verneutstyr som vernesko, hjelm, vernebriller, hansker og refleksvest. Påbudt på mange laste- og losseplasser. Sjåføren er ansvarlig for å bruke riktig verneutstyr.',
+    category: 'hms',
+    relatedTerms: ['risikovurdering', 'hms-kort'],
+  },
+  {
+    id: 'hms-kort',
+    term: 'HMS-kort',
+    definition: 'Personlig identitetskort som dokumenterer at innehaveren er lovlig ansatt og registrert i norsk arbeidsliv. Påbudt å bære synlig på mange arbeidsplasser innen bygg, anlegg og transport.',
+    category: 'hms',
+  },
+  {
+    id: 'forstehjelp',
+    term: 'Førstehjelp',
+    definition: 'Akutt hjelp ved ulykker og skader. Yrkessjåfører skal kunne livreddende førstehjelp: frie luftveier, sideleie, hjerte-lunge-redning (HLR), stanse blødninger og varsle nødetater (113).',
+    category: 'hms',
+  },
+  {
+    id: 'ergonomi',
+    term: 'Ergonomi',
+    definition: 'Tilpasning av arbeidsmiljøet for å forebygge belastningsskader. For sjåfører: riktig sittestilling, stolinnstilling, løfteteknikk ved lasting/lossing, og pauser for å motvirke vibrasjon og stillesitting.',
+    category: 'hms',
+  },
+  {
+    id: 'kosthold-sovn',
+    term: 'Kosthold og søvn',
+    definition: 'Læreplanen fremhever betydningen av riktig kosthold, tilstrekkelig søvn og fravær av rusmidler for trafikksikker kjøring. Trøtthet er en av de vanligste årsakene til ulykker med tunge kjøretøy.',
+    category: 'hms',
+  },
+
+  // Transportoppdrag (nytt fra læreplanen)
+  {
+    id: 'cmr-fraktbrev',
+    term: 'CMR-fraktbrev',
+    definition: 'Internasjonalt fraktbrev som reguleres av CMR-konvensjonen. Brukes ved grensekryssende godstransport. Dokumenterer avtale mellom avsender, transportør og mottaker, og regulerer ansvarsforholdet.',
+    category: 'transportoppdrag',
+    relatedTerms: ['fraktbrev'],
+  },
+  {
+    id: 'fraktbrev',
+    term: 'Fraktbrev',
+    definition: 'Dokument som følger godset under transport. Bekrefter transportavtalen mellom avsender og transportør. Inneholder opplysninger om avsender, mottaker, godstype, vekt og leveringsvilkår.',
+    category: 'transportoppdrag',
+    relatedTerms: ['cmr-fraktbrev'],
+  },
+  {
+    id: 'kabotasje',
+    term: 'Kabotasje',
+    definition: 'Innenriks godstransport utført av et utenlandsk transportforetak. I Norge er det tillatt med inntil 3 kabotasjeoppdrag innen 7 dager etter at den internasjonale transporten er avsluttet.',
+    category: 'transportoppdrag',
+  },
+  {
+    id: 'anbudsprosess',
+    term: 'Anbudsprosess',
+    definition: 'Prosess der en oppdragsgiver inviterer transportselskaper til å gi tilbud på transportoppdrag. Sjåføren bør forstå hvordan anbud fungerer, da det påvirker arbeidsforhold, priser og kvalitetskrav.',
+    category: 'transportoppdrag',
+    relatedTerms: ['bestillerrolle'],
+  },
+  {
+    id: 'bestillerrolle',
+    term: 'Bestillerrolle',
+    definition: 'Rollen til den som bestiller transporttjenester. Bestilleren har ansvar for å velge seriøse transportører og påse at lover og regler følges, inkludert krav til lønns- og arbeidsvilkår.',
+    category: 'transportoppdrag',
+    relatedTerms: ['anbudsprosess', 'paseplikt'],
+  },
+  {
+    id: 'paseplikt',
+    term: 'Påseplikt',
+    definition: 'Lovpålagt plikt for den som bestiller transport til å kontrollere at transportøren oppfyller kravene til lønns- og arbeidsvilkår. Gjelder også for sjåfører som er innleid eller underentreprenører.',
+    category: 'transportoppdrag',
+    relatedTerms: ['bestillerrolle'],
+  },
+  {
+    id: 'kundeservice',
+    term: 'Kundeservice',
+    definition: 'Sjåførens rolle som bedriftens ansikt utad. Innebærer profesjonell opptreden, god kommunikasjon med kunder, punktlig levering og forsiktig godshåndtering. Viktig for bedriftens omdømme.',
+    category: 'transportoppdrag',
+  },
+  {
+    id: 'regularitet',
+    term: 'Regularitet',
+    definition: 'Evnen til å holde fastsatte ruter og tidspunkt. Viktig nøkkeltall i transportbransjen, spesielt for rute- og distribusjonstransport. Påvirker kundetilfredshet og lønnsomhet.',
+    category: 'transportoppdrag',
+  },
+  {
+    id: 'godsbehandling',
+    term: 'Godsbehandling',
+    definition: 'Korrekt håndtering av gods ved lasting, transport og lossing. Inkluderer bruk av hjelpemidler (truck, jekketralle), temperaturkontroll for kjøle-/frysevarer, og forsiktig behandling av skadefølsomt gods.',
+    category: 'transportoppdrag',
+    relatedTerms: ['lastsikringsutstyr'],
+  },
+  {
+    id: 'partssamarbeid',
+    term: 'Partssamarbeid',
+    definition: 'Samarbeid mellom arbeidsgiver, arbeidstaker og tillitsvalgte for å ivareta et godt arbeidsmiljø. Inkluderer verneombud, arbeidsmiljøutvalg (AMU), tariffavtaler og den norske arbeidslivsmodellen.',
+    category: 'transportoppdrag',
+  },
+
+  // Trafikklære (nytt fra læreplanen)
+  {
+    id: 'defensiv-kjoring',
+    term: 'Defensiv kjøring',
+    definition: 'Kjørestil som handler om å forutse farer og ta hensyn til andre trafikanters feil. Innebærer å holde god avstand, tilpasse fart, og alltid ha en plan B i trafikken.',
+    category: 'trafikklaere',
+    relatedTerms: ['okonomisk-kjoring'],
+  },
+  {
+    id: 'okonomisk-kjoring',
+    term: 'Økonomisk kjøring',
+    definition: 'Kjøreteknikk som reduserer drivstofforbruk og slitasje. Inkluderer jevn hastighet, bruk av cruise control, unngå unødig tomgangskjøring, riktig girvalg og planlegging av ruten.',
+    category: 'trafikklaere',
+    relatedTerms: ['defensiv-kjoring', 'energibaerere'],
+  },
+  {
+    id: 'driftsstans',
+    term: 'Driftsstans',
+    definition: 'Uplanlagt stopp på grunn av teknisk feil eller uhell. Sjåføren skal kunne sikre kjøretøyet med varseltrekant og lys, varsle riktig instans, og utføre enkel feilsøking og nødreparasjon.',
+    category: 'trafikklaere',
+    relatedTerms: ['daglig-kontroll'],
+  },
+  {
+    id: 'daglig-kontroll',
+    term: 'Daglig kontroll',
+    definition: 'Sjåførens lovpålagte kontroll av kjøretøyet før kjøring. Inkluderer sjekk av bremser, lys, dekk, væskenivåer, speil, kopling (tilhenger) og lastsikring. Dokumenteres i kontrollskjema.',
+    category: 'trafikklaere',
+    relatedTerms: ['driftsstans'],
+  },
+  {
+    id: 'laerling',
+    term: 'Lærling',
+    definition: 'Person som er ansatt i en lærebedrift for å få opplæring i yrkessjåførfaget. Læretiden er normalt 2 år (1 år i skole + 1 år i bedrift, evt. 2 år rett i bedrift). Avsluttes med fagprøve.',
+    category: 'trafikklaere',
+    relatedTerms: ['fagprove'],
+  },
+  {
+    id: 'fagprove',
+    term: 'Fagprøve',
+    definition: 'Avsluttende prøve i yrkessjåførfaget. Består av planlegging, gjennomføring, vurdering og dokumentasjon av et transportoppdrag. Bestått fagprøve gir fagbrev som yrkessjåfør.',
+    category: 'trafikklaere',
+    relatedTerms: ['laerling'],
   },
 ]
