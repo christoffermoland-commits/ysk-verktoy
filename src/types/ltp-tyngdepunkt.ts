@@ -1,6 +1,10 @@
-export type AxleConfig = '2-aksler' | '3-aksler'
+export type LTPVehicleType = 'lastebil' | 'buss' | 'slepvogn'
+
+export type AxleConfig = '2-aksler' | '3-aksler' | '4-aksler'
 
 export interface LTPTyngdepunktInput {
+  /** Type kjøretøy */
+  vehicleType: LTPVehicleType
   /** Egenvekt på foraksel (kg) – fra vognkort eller veiing */
   egenvektForan: number
   /** Egenvekt på bakaksel/boggi (kg) – fra vognkort eller veiing */
@@ -13,7 +17,7 @@ export interface LTPTyngdepunktInput {
   akselavstand: number
   /** Antall aksler */
   antallAksler: AxleConfig
-  /** Avstand mellom aksler i boggi (cm) – kun for 3-akslet */
+  /** Avstand mellom aksler i boggi (cm) – kun for 3-akslet+ */
   boggiAvstand: number
   /** Lengde på lasterommet i cm */
   lasteromLengde: number

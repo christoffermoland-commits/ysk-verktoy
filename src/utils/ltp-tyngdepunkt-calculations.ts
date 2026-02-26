@@ -3,22 +3,41 @@ import type { LTPTyngdepunktInput, LTPTyngdepunktResult } from '../types/ltp-tyn
 const FORER_VEKT = 75 // kg – standardvekt for fører
 
 /**
- * Beregner Lastens Tyngdepunkt (LTP) for en lastebil.
+ * Beregner Lastens Tyngdepunkt (LTP).
  *
  * Formel: LTP = (Nyttelast foran × Akselavstand) / Total nyttelast
  *
  * LTP angir avstanden fra bakaksel (eller boggi midtpunkt) til der
  * tyngdepunktet til lasten bør være, for å utnytte kjøretøyets kapasitet optimalt.
+ *
+ * Støttede kjøretøytyper:
+ * - Lastebil: 2, 3 (boggi), eller 4 aksler. Førervekt 75 kg legges til foraksel.
+ * - Buss: 2 eller 3 aksler (boggi). Førervekt 75 kg legges til foraksel.
+ * - Slepvogn: 2 eller 3 aksler. Ingen førervekt (tilhenger).
+ *
+ * Kilde: øvingsoppgaver.no (artikler om LTP for lastebil, buss og slep)
  */
 export function calculateLTPTyngdepunkt(input: LTPTyngdepunktInput): LTPTyngdepunktResult {
   const advarsler: string[] = []
   const forklaring: string[] = []
 
-  // Legg til førervekt på foraksel
-  const effektivEgenvektForan = input.egenvektForan + FORER_VEKT
-  forklaring.push(
-    `Egenvekt foran inkl. fører: ${input.egenvektForan} + ${FORER_VEKT} = ${effektivEgenvektForan} kg`
-  )
+  // Førervekt gjelder lastebil og buss, men IKKE slepvogn
+  const harForer = input.vehicleType !== 'slepvogn'
+  const forerVekt = harForer ? FORER_VEKT : 0
+
+  let effektivEgenvektForan: number
+
+  if (harForer) {
+    effektivEgenvektForan = input.egenvektForan + forerVekt
+    forklaring.push(
+      `Egenvekt foran inkl. fører: ${input.egenvektForan} + ${forerVekt} = ${effektivEgenvektForan} kg`
+    )
+  } else {
+    effektivEgenvektForan = input.egenvektForan
+    forklaring.push(
+      `Egenvekt foran: ${input.egenvektForan} kg (slepvogn – ingen førervekt)`
+    )
+  }
 
   // Beregn nyttelast per aksel
   const nyttelastForan = input.tillattAksellastForan - effektivEgenvektForan
@@ -62,9 +81,11 @@ export function calculateLTPTyngdepunkt(input: LTPTyngdepunktInput): LTPTyngdepu
     }
   }
 
-  // For 3-akslet (boggi): effektiv akselavstand er til midtpunktet av boggien
+  // Beregn effektiv akselavstand (til midtpunktet av boggi for 3+ aksler bak)
   let effektivAkselavstand = input.akselavstand
-  if (input.antallAksler === '3-aksler' && input.boggiAvstand > 0) {
+  const harBoggi = input.antallAksler !== '2-aksler' && input.boggiAvstand > 0
+
+  if (harBoggi) {
     const boggiMidtpunkt = input.boggiAvstand / 2
     effektivAkselavstand = input.akselavstand + boggiMidtpunkt
     forklaring.push(
@@ -80,8 +101,14 @@ export function calculateLTPTyngdepunkt(input: LTPTyngdepunktInput): LTPTyngdepu
   forklaring.push(
     `LTP = (${nyttelastForan} × ${effektivAkselavstand}) / ${totalNyttelast} = ${ltp.toFixed(1)} cm`
   )
+
+  const boggiLabel = harBoggi ? ' (boggi midtpunkt)' : ''
+  const vehicleLabel =
+    input.vehicleType === 'lastebil' ? 'lastebilen' :
+    input.vehicleType === 'buss' ? 'bussen' : 'slepvognen'
+
   forklaring.push(
-    `Lastens tyngdepunkt bør være ${ltp.toFixed(0)} cm foran bakaksel${input.antallAksler === '3-aksler' ? ' (boggi midtpunkt)' : ''}`
+    `Lastens tyngdepunkt bør være ${ltp.toFixed(0)} cm foran bakaksel${boggiLabel} på ${vehicleLabel}`
   )
 
   const ltpProsent = (ltp / effektivAkselavstand) * 100
@@ -89,17 +116,22 @@ export function calculateLTPTyngdepunkt(input: LTPTyngdepunktInput): LTPTyngdepu
   // Beregn avstand fra bakre kant av lasterom til LTP
   const ltpFraLasteromBakkant = input.overhengBak + ltp
 
-  if (ltpFraLasteromBakkant > input.lasteromLengde) {
+  if (input.lasteromLengde > 0 && ltpFraLasteromBakkant > input.lasteromLengde) {
     advarsler.push(
       `LTP (${ltpFraLasteromBakkant.toFixed(0)} cm fra bakkant) er utenfor lasterommet (${input.lasteromLengde} cm). Kontroller verdiene.`
     )
   }
 
-  if (nyttelastForan > totalNyttelast * 0.6) {
+  if (harForer && nyttelastForan > totalNyttelast * 0.6) {
     advarsler.push(
       'Uvanlig stor nyttelast på foraksel. Kontroller at egenvekt og aksellaster er riktig.'
     )
   }
+
+  // Påminnelse om at LTP alene ikke er nok
+  forklaring.push(
+    `Husk: LTP er ikke hele svaret – sjekk også veigrensene (bruksklasse) for lovlig totalvekt.`
+  )
 
   return {
     ltp: Math.round(ltp * 10) / 10,
