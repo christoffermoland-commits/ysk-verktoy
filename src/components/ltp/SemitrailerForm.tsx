@@ -102,7 +102,7 @@ export default function SemitrailerForm({ weightClass }: Props) {
         className="w-full mt-2 flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover disabled:bg-surface-tertiary disabled:text-text-muted text-white font-semibold rounded-xl transition-colors"
       >
         <Calculator className="w-5 h-5" />
-        Beregn LTP
+        Beregn nyttelast
       </button>
 
       {!canCalculate && (
