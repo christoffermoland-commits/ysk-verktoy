@@ -1,4 +1,4 @@
-import { Calculator, BookOpen, Clock, Crosshair, type LucideIcon } from 'lucide-react'
+import { Calculator, BookOpen, Clock, Crosshair, ShieldAlert, ClipboardCheck, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   path: string
@@ -56,5 +56,27 @@ export const navItems: NavItem[] = [
     colorText: 'text-teal-400',
     colorBorder: 'hover:border-teal-500/40',
     colorGlow: 'hover:shadow-teal-500/10',
+  },
+  {
+    path: '/ulykkeshandtering',
+    label: 'Ulykkeshåndtering',
+    icon: ShieldAlert,
+    emoji: '🚨',
+    description: 'Sikre, varsle og hjelpe – førstemann til skadested',
+    color: 'bg-red-500/15',
+    colorText: 'text-red-400',
+    colorBorder: 'hover:border-red-500/40',
+    colorGlow: 'hover:shadow-red-500/10',
+  },
+  {
+    path: '/daglig-kontroll',
+    label: 'Daglig kontroll',
+    icon: ClipboardCheck,
+    emoji: '✅',
+    description: 'Sjekkliste for daglig kontroll av lastebil og tilhenger',
+    color: 'bg-amber-500/15',
+    colorText: 'text-amber-400',
+    colorBorder: 'hover:border-amber-500/40',
+    colorGlow: 'hover:shadow-amber-500/10',
   },
 ]

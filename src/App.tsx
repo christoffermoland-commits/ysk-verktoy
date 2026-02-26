@@ -6,6 +6,8 @@ import NyttelastCalculatorPage from './pages/NyttelastCalculatorPage'
 import DictionaryPage from './pages/DictionaryPage'
 import DrivingTimePage from './pages/DrivingTimePage'
 import DrivingTimeCalculatorPage from './pages/DrivingTimeCalculatorPage'
+import UlykkeshandteringPage from './pages/UlykkeshandteringPage'
+import DagligKontrollPage from './pages/DagligKontrollPage'
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
         <Route path="fagordbok" element={<DictionaryPage />} />
         <Route path="kjore-hviletid" element={<DrivingTimePage />} />
         <Route path="kjore-hviletid/kalkulator" element={<DrivingTimeCalculatorPage />} />
+        <Route path="ulykkeshandtering" element={<UlykkeshandteringPage />} />
+        <Route path="daglig-kontroll" element={<DagligKontrollPage />} />
       </Route>
     </Routes>
   )
