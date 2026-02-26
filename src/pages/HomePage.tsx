@@ -8,7 +8,11 @@ export default function HomePage() {
       {/* Hero – Mattehjelpen-style centered header */}
       <section className="text-center space-y-4">
         <div className="flex justify-center">
-          <div className="text-5xl sm:text-6xl">🚛</div>
+          <img
+            src="/otl-logo.png"
+            alt="Opplæringskontoret Transport & Logistikk Agder"
+            className="h-24 sm:h-28 w-auto"
+          />
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
           <span className="text-accent">YSK</span>{' '}
