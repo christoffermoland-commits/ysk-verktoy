@@ -13,139 +13,228 @@ import {
   Gauge,
   Package,
   ClipboardList,
+  List,
 } from 'lucide-react'
 
-interface CheckItem {
+/* ── Forenklet sjekkliste (hovedvisning) ── */
+
+interface SimpleItem {
   id: string
   label: string
-  detail?: string
 }
 
-interface CheckSection {
+interface SimpleSection {
   id: string
   label: string
   icon: typeof FileText
-  items: CheckItem[]
+  items: SimpleItem[]
 }
 
-const checkSections: CheckSection[] = [
+const simpleSections: SimpleSection[] = [
   {
-    id: 'dokumentasjon',
-    label: 'Dokumentasjon',
+    id: 's-dok',
+    label: 'Dokumenter',
     icon: FileText,
     items: [
-      { id: 'dok-forerkort', label: 'Førerkort og YSK-bevis', detail: 'Sjekk at gyldig førerkort og kode 95 (YSK) er med' },
-      { id: 'dok-vognkort', label: 'Vognkort del 1', detail: 'Skal alltid ligge i kjøretøyet' },
-      { id: 'dok-fraktbrev', label: 'Lastpapirer og fraktbrev', detail: 'Kontroller at fraktbrev stemmer med lasten' },
-      { id: 'dok-adr', label: 'ADR-dokumenter (ved farlig gods)', detail: 'Transportdokument, skriftlige instruksjoner og sjåførens ADR-kompetansebevis' },
-      { id: 'dok-kontrollkort', label: 'Kontrollkort for fartsskriver', detail: 'Dokumentasjon på siste periodiske kontroll' },
+      { id: 's-dok-1', label: 'Førerkort, vognkort og YSK-bevis er med' },
+      { id: 's-dok-2', label: 'Fraktbrev og eventuelle ADR-dokumenter' },
     ],
   },
   {
-    id: 'kabin',
-    label: 'Kabin og interiør',
+    id: 's-kabin',
+    label: 'Førerhus',
     icon: MonitorCog,
     items: [
-      { id: 'kab-sete', label: 'Sete, ratt og speil', detail: 'Juster sete, ratt og alle speil til riktig posisjon' },
-      { id: 'kab-horn', label: 'Horn og vindusviskere', detail: 'Test at horn og vindusviskere med spylervæske fungerer' },
-      { id: 'kab-defroster', label: 'Defroster og speilvarme', detail: 'Sjekk at defroster og speilvarme virker (spesielt vinterstid)' },
-      { id: 'kab-varsel', label: 'Varsellamper ved oppstart', detail: 'Alle varsellamper skal tennes og slukkes ved normal oppstart' },
-      { id: 'kab-rygging', label: 'Ryggesystem og kamera', detail: 'Test ryggesensorer og -kamera der det er montert' },
-      { id: 'kab-nodblink', label: 'Nødblink (varsellys)', detail: 'Sjekk at nødblink virker' },
-      { id: 'kab-dorer', label: 'Dører og nødutganger', detail: 'Alle dører og nødutganger skal fungere og ikke være blokkert' },
-      { id: 'kab-brannslukker', label: 'Brannslukker', detail: 'Kontroller at brannslukker er tilgjengelig og har gyldig dato' },
+      { id: 's-kab-1', label: 'Juster sete, ratt og speil' },
+      { id: 's-kab-2', label: 'Test horn, vindusviskere og defroster' },
+      { id: 's-kab-3', label: 'Sjekk varsellamper ved oppstart' },
+      { id: 's-kab-4', label: 'Brannslukker og sikkerhetsutstyr tilgjengelig' },
     ],
   },
   {
-    id: 'motor',
-    label: 'Motorrom og væsker',
+    id: 's-motor',
+    label: 'Motorrom',
     icon: Droplets,
     items: [
-      { id: 'mot-olje', label: 'Motoroljenivå', detail: 'Sjekk med peilestav – skal være mellom min og maks' },
-      { id: 'mot-kjolevaeske', label: 'Kjølevæskenivå', detail: 'Sjekk nivå i ekspansjonsbeholderen (kun på kald motor)' },
-      { id: 'mot-bremsevaeske', label: 'Bremsevæskenivå', detail: 'Kontroller nivå i bremsevæskebeholderen' },
-      { id: 'mot-servo', label: 'Servoolje', detail: 'Sjekk nivå i servostyringsbeholderen' },
-      { id: 'mot-lekkasje', label: 'Lekkasjesjekk', detail: 'Se under og rundt motoren etter olje-, vann- eller luftlekkasjer' },
-      { id: 'mot-remmer', label: 'Remmer og slanger', detail: 'Visuell sjekk av drivremmer, slanger og luftsystem for slitasje' },
-      { id: 'mot-batteri', label: 'Batteri og tilkoblinger', detail: 'Kontroller at batteripolene sitter godt og er uten korrosjon' },
+      { id: 's-mot-1', label: 'Sjekk væskenivåer (olje, kjølevæske, brems, servo)' },
+      { id: 's-mot-2', label: 'Sjekk for lekkasjer under kjøretøyet' },
     ],
   },
   {
-    id: 'lys',
-    label: 'Lys og reflekser',
+    id: 's-lys',
+    label: 'Lys',
     icon: Lightbulb,
     items: [
-      { id: 'lys-naer', label: 'Nærlys og fjernlys', detail: 'Test begge og sjekk at lyktene er rene' },
-      { id: 'lys-park', label: 'Parklys og tåkelys', detail: 'Test foran og bak' },
-      { id: 'lys-brems', label: 'Bremselys', detail: 'Be noen sjekke eller bruk refleksjon i vegg/vindu' },
-      { id: 'lys-rygge', label: 'Ryggelys', detail: 'Sjekk at ryggelys tennes ved revers' },
-      { id: 'lys-blink', label: 'Blinklys / retningslys', detail: 'Test alle retningslys, også på tilhenger' },
-      { id: 'lys-refleks', label: 'Reflekser og markeringslys', detail: 'Kontroller at alle reflekser og markeringslys er hele og rene' },
-      { id: 'lys-arbeid', label: 'Arbeidslys', detail: 'Test arbeidslys der det er montert' },
-      { id: 'lys-skilt', label: 'Skiltbelysning', detail: 'Sjekk at skiltplater er synlige og belyste' },
-      { id: 'lys-henger', label: 'Lys på tilhenger', detail: 'Sjekk alle lys etter tilkobling (7/13-pin, ISO 7638)' },
+      { id: 's-lys-1', label: 'Test alle lys (nær, fjern, bremse, blink, rygge)' },
+      { id: 's-lys-2', label: 'Sjekk reflekser, markeringslys og skiltbelysning' },
     ],
   },
   {
-    id: 'hjul',
-    label: 'Hjul, dekk og fjæring',
+    id: 's-hjul',
+    label: 'Hjul og dekk',
     icon: CircleDot,
     items: [
-      { id: 'hj-monster', label: 'Mønsterdybde', detail: 'Min. 1,6 mm (sommer), 5 mm på styrende aksel (vinter). Mål med dybdemåler' },
-      { id: 'hj-trykk', label: 'Lufttrykk i dekk', detail: 'Sjekk mot anbefalt trykk i dørkarmen eller instruksjonsbok' },
-      { id: 'hj-skader', label: 'Dekk- og felgskader', detail: 'Se etter kutt, bulker, sprekker i dekk og felger' },
-      { id: 'hj-muttere', label: 'Hjulmuttere / -bolter', detail: 'Visuell sjekk for løse eller manglende hjulmuttere (bruk momentindikator)' },
-      { id: 'hj-luft', label: 'Luftbelger', detail: 'Sjekk luftbelger for sprekker og lekkasjer' },
-      { id: 'hj-blad', label: 'Bladfjærer', detail: 'Kontroller for brukne blader og feilstilling' },
-      { id: 'hj-nav', label: 'Nav og lagre', detail: 'Sjekk navcaps for oljelekkasje og unormal varme etter kjøring' },
+      { id: 's-hj-1', label: 'Sjekk lufttrykk og mønsterdybde' },
+      { id: 's-hj-2', label: 'Sjekk hjulmuttere, felger og fjæring' },
     ],
   },
   {
-    id: 'bremser',
-    label: 'Bremser og luftsystem',
+    id: 's-brems',
+    label: 'Bremser',
     icon: Gauge,
     items: [
-      { id: 'br-trykk', label: 'Trykkoppbygging', detail: 'Start motoren og kontroller at lufttrykket bygger seg opp til driftstrykk' },
-      { id: 'br-lekkasje', label: 'Lekkasjesjekk luftsystem', detail: 'Lytt etter luftlekkasjer på slanger, koplinger og ventiler' },
-      { id: 'br-fotbrems', label: 'Fotbrems', detail: 'Test fotbremsen – pedalen skal ha fast motstand' },
-      { id: 'br-parkering', label: 'Parkeringsbrems', detail: 'Test at parkeringsbremsen holder kjøretøyet på plass' },
-      { id: 'br-retarder', label: 'Retarder / motorbremse', detail: 'Test retarder og motorbremse ved lav hastighet' },
-      { id: 'br-trykktap', label: 'Trykktaptest', detail: 'Med fullt trykk og motor av: trykket skal holde seg stabilt i minst 1 minutt' },
-      { id: 'br-henger', label: 'Brems på tilhenger', detail: 'Test at tilhengerens bremser virker, og at nødbremseventilen løser ut korrekt' },
+      { id: 's-br-1', label: 'Test bremser (fotbrems, parkering, retarder)' },
+      { id: 's-br-2', label: 'Sjekk lufttrykk og gjør trykktaptest' },
     ],
   },
   {
-    id: 'last',
-    label: 'Last og påbygg',
+    id: 's-last',
+    label: 'Last og tilhenger',
     icon: Package,
     items: [
-      { id: 'la-pabygg', label: 'Påbygg og utstyr', detail: 'Sikring av kran, lift, tipp eller annet påmontert utstyr' },
-      { id: 'la-sikring', label: 'Lastsikringsutstyr', detail: 'Kontroller stropper, kjettinger, strekkfisker og friksjonsmatter for skader' },
-      { id: 'la-plassering', label: 'Lastplassering', detail: 'Lasten skal være jevnt fordelt og tyngdepunktet så lavt som mulig' },
-      { id: 'la-hoyde', label: 'Høyde og vekt', detail: 'Kontroller at total høyde og vekt er innenfor tillatte grenser for ruten' },
-      { id: 'la-temp', label: 'Temperaturkontroll (kjøl/frys)', detail: 'Sjekk kjøleaggregat og temperaturregistrering ved temperaturregulert transport' },
-      { id: 'la-dorer', label: 'Dører og lemmer', detail: 'Alle dører, lemmer og bakløft skal være forsvarlig lukket og sikret' },
+      { id: 's-la-1', label: 'Sjekk lastsikring og lastplassering' },
+      { id: 's-la-2', label: 'Sjekk kopling, dører og lemmer' },
+      { id: 's-la-3', label: 'Kontroller lys og bremser på tilhenger' },
     ],
   },
   {
-    id: 'avsluttende',
-    label: 'Avsluttende kontroll',
+    id: 's-avslutt',
+    label: 'Avsluttende',
     icon: ClipboardList,
     items: [
-      { id: 'av-fartsskriver', label: 'Fartsskriver', detail: 'Sjåførkort innstukket, riktig modus valgt (kjøring/annet arbeid)' },
-      { id: 'av-speil', label: 'Speil og kameraer', detail: 'Sjekk at alle speil og kameraer er rene og riktig innstilt' },
-      { id: 'av-avvik', label: 'Avviksnotering', detail: 'Skriv ned eventuelle avvik i kjørebok eller bedriftens kontrollskjema' },
-      { id: 'av-test', label: 'Funksjonstest', detail: 'Kjør sakte fremover – lytt etter unormale lyder eller vibrasjoner' },
+      { id: 's-av-1', label: 'Sjåførkort i fartsskriver, riktig modus' },
+      { id: 's-av-2', label: 'Kjør sakte frem – lytt etter unormale lyder' },
+      { id: 's-av-3', label: 'Noter eventuelle avvik' },
     ],
   },
 ]
 
+/* ── Detaljert sjekkliste (supplement) ── */
+
+interface DetailItem {
+  label: string
+  detail: string
+}
+
+interface DetailSection {
+  id: string
+  label: string
+  items: DetailItem[]
+}
+
+const detailSections: DetailSection[] = [
+  {
+    id: 'd-dok',
+    label: 'Dokumentasjon',
+    items: [
+      { label: 'Førerkort og YSK-bevis', detail: 'Sjekk at gyldig førerkort og kode 95 (YSK) er med' },
+      { label: 'Vognkort del 1', detail: 'Skal alltid ligge i kjøretøyet' },
+      { label: 'Lastpapirer og fraktbrev', detail: 'Kontroller at fraktbrev stemmer med lasten' },
+      { label: 'ADR-dokumenter', detail: 'Transportdokument, skriftlige instruksjoner og ADR-kompetansebevis (ved farlig gods)' },
+      { label: 'Kontrollkort fartsskriver', detail: 'Dokumentasjon på siste periodiske kontroll' },
+    ],
+  },
+  {
+    id: 'd-kabin',
+    label: 'Kabin og interiør',
+    items: [
+      { label: 'Sete, ratt og speil', detail: 'Juster sete, ratt og alle speil til riktig posisjon' },
+      { label: 'Horn og vindusviskere', detail: 'Test at horn og vindusviskere med spylervæske fungerer' },
+      { label: 'Defroster og speilvarme', detail: 'Sjekk at defroster og speilvarme virker (spesielt vinterstid)' },
+      { label: 'Varsellamper ved oppstart', detail: 'Alle varsellamper skal tennes og slukkes ved normal oppstart' },
+      { label: 'Ryggesystem og kamera', detail: 'Test ryggesensorer og -kamera der det er montert' },
+      { label: 'Nødblink (varsellys)', detail: 'Sjekk at nødblink virker' },
+      { label: 'Dører og nødutganger', detail: 'Alle dører og nødutganger skal fungere og ikke være blokkert' },
+      { label: 'Brannslukker', detail: 'Kontroller at brannslukker er tilgjengelig og har gyldig dato' },
+    ],
+  },
+  {
+    id: 'd-motor',
+    label: 'Motorrom og væsker',
+    items: [
+      { label: 'Motoroljenivå', detail: 'Sjekk med peilestav – skal være mellom min og maks' },
+      { label: 'Kjølevæskenivå', detail: 'Sjekk nivå i ekspansjonsbeholderen (kun på kald motor)' },
+      { label: 'Bremsevæskenivå', detail: 'Kontroller nivå i bremsevæskebeholderen' },
+      { label: 'Servoolje', detail: 'Sjekk nivå i servostyringsbeholderen' },
+      { label: 'Lekkasjesjekk', detail: 'Se under og rundt motoren etter olje-, vann- eller luftlekkasjer' },
+      { label: 'Remmer og slanger', detail: 'Visuell sjekk av drivremmer, slanger og luftsystem for slitasje' },
+      { label: 'Batteri og tilkoblinger', detail: 'Kontroller at batteripolene sitter godt og er uten korrosjon' },
+    ],
+  },
+  {
+    id: 'd-lys',
+    label: 'Lys og reflekser',
+    items: [
+      { label: 'Nærlys og fjernlys', detail: 'Test begge og sjekk at lyktene er rene' },
+      { label: 'Parklys og tåkelys', detail: 'Test foran og bak' },
+      { label: 'Bremselys', detail: 'Be noen sjekke eller bruk refleksjon i vegg/vindu' },
+      { label: 'Ryggelys', detail: 'Sjekk at ryggelys tennes ved revers' },
+      { label: 'Blinklys / retningslys', detail: 'Test alle retningslys, også på tilhenger' },
+      { label: 'Reflekser og markeringslys', detail: 'Kontroller at alle reflekser og markeringslys er hele og rene' },
+      { label: 'Arbeidslys', detail: 'Test arbeidslys der det er montert' },
+      { label: 'Skiltbelysning', detail: 'Sjekk at skiltplater er synlige og belyste' },
+      { label: 'Lys på tilhenger', detail: 'Sjekk alle lys etter tilkobling (7/13-pin, ISO 7638)' },
+    ],
+  },
+  {
+    id: 'd-hjul',
+    label: 'Hjul, dekk og fjæring',
+    items: [
+      { label: 'Mønsterdybde', detail: 'Min. 1,6 mm (sommer), 5 mm på styrende aksel (vinter). Mål med dybdemåler' },
+      { label: 'Lufttrykk i dekk', detail: 'Sjekk mot anbefalt trykk i dørkarmen eller instruksjonsbok' },
+      { label: 'Dekk- og felgskader', detail: 'Se etter kutt, bulker, sprekker i dekk og felger' },
+      { label: 'Hjulmuttere / -bolter', detail: 'Visuell sjekk for løse eller manglende hjulmuttere (bruk momentindikator)' },
+      { label: 'Luftbelger', detail: 'Sjekk luftbelger for sprekker og lekkasjer' },
+      { label: 'Bladfjærer', detail: 'Kontroller for brukne blader og feilstilling' },
+      { label: 'Nav og lagre', detail: 'Sjekk navcaps for oljelekkasje og unormal varme etter kjøring' },
+    ],
+  },
+  {
+    id: 'd-bremser',
+    label: 'Bremser og luftsystem',
+    items: [
+      { label: 'Trykkoppbygging', detail: 'Start motoren og kontroller at lufttrykket bygger seg opp til driftstrykk' },
+      { label: 'Lekkasjesjekk luftsystem', detail: 'Lytt etter luftlekkasjer på slanger, koplinger og ventiler' },
+      { label: 'Fotbrems', detail: 'Test fotbremsen – pedalen skal ha fast motstand' },
+      { label: 'Parkeringsbrems', detail: 'Test at parkeringsbremsen holder kjøretøyet på plass' },
+      { label: 'Retarder / motorbremse', detail: 'Test retarder og motorbremse ved lav hastighet' },
+      { label: 'Trykktaptest', detail: 'Med fullt trykk og motor av: trykket skal holde seg stabilt i minst 1 minutt' },
+      { label: 'Brems på tilhenger', detail: 'Test at tilhengerens bremser virker, og at nødbremseventilen løser ut korrekt' },
+    ],
+  },
+  {
+    id: 'd-last',
+    label: 'Last og påbygg',
+    items: [
+      { label: 'Påbygg og utstyr', detail: 'Sikring av kran, lift, tipp eller annet påmontert utstyr' },
+      { label: 'Lastsikringsutstyr', detail: 'Kontroller stropper, kjettinger, strekkfisker og friksjonsmatter for skader' },
+      { label: 'Lastplassering', detail: 'Lasten skal være jevnt fordelt og tyngdepunktet så lavt som mulig' },
+      { label: 'Høyde og vekt', detail: 'Kontroller at total høyde og vekt er innenfor tillatte grenser for ruten' },
+      { label: 'Temperaturkontroll', detail: 'Sjekk kjøleaggregat og temperaturregistrering ved temperaturregulert transport' },
+      { label: 'Dører og lemmer', detail: 'Alle dører, lemmer og bakløft skal være forsvarlig lukket og sikret' },
+    ],
+  },
+  {
+    id: 'd-avslutt',
+    label: 'Avsluttende kontroll',
+    items: [
+      { label: 'Fartsskriver', detail: 'Sjåførkort innstukket, riktig modus valgt (kjøring/annet arbeid)' },
+      { label: 'Speil og kameraer', detail: 'Sjekk at alle speil og kameraer er rene og riktig innstilt' },
+      { label: 'Avviksnotering', detail: 'Skriv ned eventuelle avvik i kjørebok eller bedriftens kontrollskjema' },
+      { label: 'Funksjonstest', detail: 'Kjør sakte fremover – lytt etter unormale lyder eller vibrasjoner' },
+    ],
+  },
+]
+
+/* ── Komponent ── */
+
 export default function DagligKontrollPage() {
   const [checked, setChecked] = useState<Record<string, boolean>>({})
-  const [openSection, setOpenSection] = useState<string | null>('dokumentasjon')
+  const [showDetails, setShowDetails] = useState(false)
+  const [openDetail, setOpenDetail] = useState<string | null>(null)
 
   const totalItems = useMemo(
-    () => checkSections.reduce((sum, s) => sum + s.items.length, 0),
+    () => simpleSections.reduce((sum, s) => sum + s.items.length, 0),
     []
   )
   const totalChecked = useMemo(
@@ -163,7 +252,7 @@ export default function DagligKontrollPage() {
     setChecked({})
   }
 
-  function sectionCheckedCount(section: CheckSection) {
+  function sectionCheckedCount(section: SimpleSection) {
     return section.items.filter((item) => checked[item.id]).length
   }
 
@@ -220,68 +309,100 @@ export default function DagligKontrollPage() {
         <div className="text-xs text-text-muted mt-1.5 text-right">{percentage}%</div>
       </div>
 
-      {/* Checklist accordion sections */}
+      {/* Simplified checklist */}
       <div className="space-y-3">
-        {checkSections.map((section) => {
+        {simpleSections.map((section) => {
           const Icon = section.icon
-          const isOpen = openSection === section.id
           const sectionDone = sectionCheckedCount(section) === section.items.length
           const sectionCount = sectionCheckedCount(section)
 
           return (
             <div key={section.id} className="bg-surface-secondary rounded-xl border border-border-default overflow-hidden">
-              <button
-                onClick={() => setOpenSection(isOpen ? null : section.id)}
-                className="w-full flex items-center justify-between p-4 text-left hover:bg-surface-tertiary/50 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-5 h-5 ${sectionDone ? 'text-green-400' : 'text-amber-400'}`} />
-                  <span className="font-medium">{section.label}</span>
+              <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                <div className="flex items-center gap-2.5">
+                  <Icon className={`w-4 h-4 ${sectionDone ? 'text-green-400' : 'text-amber-400'}`} />
+                  <span className="text-sm font-medium text-text-secondary">{section.label}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs ${sectionDone ? 'text-green-400' : 'text-text-muted'}`}>
-                    {sectionCount}/{section.items.length}
-                  </span>
-                  <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-                </div>
-              </button>
-
-              {isOpen && (
-                <div className="px-4 pb-3 border-t border-border-subtle">
-                  {section.items.map((item) => {
-                    const isChecked = !!checked[item.id]
-                    return (
-                      <button
-                        key={item.id}
-                        role="checkbox"
-                        aria-checked={isChecked}
-                        onClick={() => toggleItem(item.id)}
-                        className="w-full flex items-start gap-3 py-3 text-left hover:bg-surface-tertiary/30 rounded-lg px-1 transition-colors"
-                      >
-                        {isChecked ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        ) : (
-                          <Circle className="w-5 h-5 text-text-muted flex-shrink-0 mt-0.5" />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <span className={`text-sm font-medium ${isChecked ? 'text-text-muted line-through' : 'text-text-primary'}`}>
-                            {item.label}
-                          </span>
-                          {item.detail && (
-                            <p className={`text-xs mt-0.5 leading-relaxed ${isChecked ? 'text-text-muted/60' : 'text-text-secondary'}`}>
-                              {item.detail}
-                            </p>
-                          )}
-                        </div>
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
+                <span className={`text-xs ${sectionDone ? 'text-green-400' : 'text-text-muted'}`}>
+                  {sectionCount}/{section.items.length}
+                </span>
+              </div>
+              <div className="px-3 pb-2">
+                {section.items.map((item) => {
+                  const isChecked = !!checked[item.id]
+                  return (
+                    <button
+                      key={item.id}
+                      role="checkbox"
+                      aria-checked={isChecked}
+                      onClick={() => toggleItem(item.id)}
+                      className="w-full flex items-center gap-3 py-2.5 text-left hover:bg-surface-tertiary/30 rounded-lg px-1.5 transition-colors"
+                    >
+                      {isChecked ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                      ) : (
+                        <Circle className="w-5 h-5 text-text-muted flex-shrink-0" />
+                      )}
+                      <span className={`text-sm ${isChecked ? 'text-text-muted line-through' : 'text-text-primary'}`}>
+                        {item.label}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )
         })}
       </div>
+
+      {/* Detailed list toggle */}
+      <button
+        onClick={() => setShowDetails(!showDetails)}
+        className="w-full flex items-center justify-between bg-surface-secondary rounded-xl border border-border-default p-4 hover:bg-surface-tertiary/50 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <List className="w-5 h-5 text-accent" />
+          <div className="text-left">
+            <span className="font-medium text-sm">Detaljert sjekkliste</span>
+            <p className="text-xs text-text-muted">Fullstendig liste med forklaringer for hvert punkt</p>
+          </div>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${showDetails ? 'rotate-180' : ''}`} />
+      </button>
+
+      {showDetails && (
+        <div className="space-y-3">
+          {detailSections.map((section) => {
+            const isOpen = openDetail === section.id
+
+            return (
+              <div key={section.id} className="bg-surface-secondary rounded-xl border border-border-default overflow-hidden">
+                <button
+                  onClick={() => setOpenDetail(isOpen ? null : section.id)}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-surface-tertiary/50 transition-colors"
+                >
+                  <span className="font-medium text-sm">{section.label}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-text-muted">{section.items.length} punkt</span>
+                    <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div className="px-4 pb-4 border-t border-border-subtle space-y-3">
+                    {section.items.map((item, i) => (
+                      <div key={i} className="pt-3">
+                        <h4 className="text-sm font-medium text-text-primary">{item.label}</h4>
+                        <p className="text-xs text-text-secondary mt-0.5 leading-relaxed">{item.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       {/* Disclaimer */}
       <p className="text-xs text-text-muted text-center leading-relaxed">
